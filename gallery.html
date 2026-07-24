@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Teta Hills Secondary School</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🎓</span>
+                <span class="logo-text">Teta Hills</span>
+            </div>
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="academics.html">Academics</a></li>
+                <li><a href="facilities.html">Facilities</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Our Gallery</h1>
+        <p>Moments and Memories from Life at Teta Hills</p>
+    </section>
+
+    <!-- Gallery Introduction -->
+    <section class="facilities-intro">
+        <div class="container">
+            <p class="intro-text">Take a look through campus life at Teta Hills Secondary School — from classrooms and laboratories to sports fields, performances, and celebrations. Use the filters below to browse by category.</p>
+        </div>
+    </section>
+
+    <!-- Gallery Grid -->
+    <section class="gallery-main">
+        <div class="container">
+            <div class="gallery-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="campus">Campus</button>
+                <button class="filter-btn" data-filter="academics">Academics</button>
+                <button class="filter-btn" data-filter="sports">Sports</button>
+                <button class="filter-btn" data-filter="arts">Arts & Culture</button>
+                <button class="filter-btn" data-filter="events">Events</button>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item" data-category="campus">
+                    <div class="gallery-visual visual-1">🏫</div>
+                    <div class="gallery-caption">
+                        <h3>Main Campus Building</h3>
+                        <p>Our spacious, modern classroom block at the heart of campus.</p>
+                        <span class="gallery-tag">Campus</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="academics">
+                    <div class="gallery-visual visual-2">🔬</div>
+                    <div class="gallery-caption">
+                        <h3>Science Laboratory</h3>
+                        <p>Students conducting hands-on experiments in chemistry class.</p>
+                        <span class="gallery-tag">Academics</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="sports">
+                    <div class="gallery-visual visual-3">⚽</div>
+                    <div class="gallery-caption">
+                        <h3>Football on the Main Field</h3>
+                        <p>An inter-house football match on our full-size pitch.</p>
+                        <span class="gallery-tag">Sports</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="arts">
+                    <div class="gallery-visual visual-4">🎭</div>
+                    <div class="gallery-caption">
+                        <h3>Drama Club Performance</h3>
+                        <p>Students showcase their talent at the annual drama festival.</p>
+                        <span class="gallery-tag">Arts &amp; Culture</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="events">
+                    <div class="gallery-visual visual-5">🎓</div>
+                    <div class="gallery-caption">
+                        <h3>Graduation Day</h3>
+                        <p>Celebrating another successful class of graduating students.</p>
+                        <span class="gallery-tag">Events</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="campus">
+                    <div class="gallery-visual visual-6">📚</div>
+                    <div class="gallery-caption">
+                        <h3>Library & Resource Center</h3>
+                        <p>A quiet space where students research, read, and study.</p>
+                        <span class="gallery-tag">Campus</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="sports">
+                    <div class="gallery-visual visual-1">🏀</div>
+                    <div class="gallery-caption">
+                        <h3>Basketball Court Action</h3>
+                        <p>Weekly training sessions on our outdoor basketball courts.</p>
+                        <span class="gallery-tag">Sports</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="academics">
+                    <div class="gallery-visual visual-2">💻</div>
+                    <div class="gallery-caption">
+                        <h3>Computer Lab Session</h3>
+                        <p>Digital literacy and programming classes in progress.</p>
+                        <span class="gallery-tag">Academics</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="arts">
+                    <div class="gallery-visual visual-3">🎵</div>
+                    <div class="gallery-caption">
+                        <h3>School Choir</h3>
+                        <p>Our award-winning choir rehearsing for the music gala.</p>
+                        <span class="gallery-tag">Arts &amp; Culture</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="events">
+                    <div class="gallery-visual visual-4">🏆</div>
+                    <div class="gallery-caption">
+                        <h3>Annual Sports Day</h3>
+                        <p>Students and staff cheering on athletes at Sports Day.</p>
+                        <span class="gallery-tag">Events</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="campus">
+                    <div class="gallery-visual visual-5">🛏️</div>
+                    <div class="gallery-caption">
+                        <h3>Dormitory Life</h3>
+                        <p>A look inside our comfortable, secure boarding facilities.</p>
+                        <span class="gallery-tag">Campus</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="events">
+                    <div class="gallery-visual visual-6">🎉</div>
+                    <div class="gallery-caption">
+                        <h3>New Term Welcome</h3>
+                        <p>Students and staff gather to kick off a new academic term.</p>
+                        <span class="gallery-tag">Events</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <div class="cta-content">
+            <h2>Want to See Us in Person?</h2>
+            <p>Schedule a campus tour and experience Teta Hills firsthand</p>
+            <a href="contact.html" class="btn btn-light">Book a Tour</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About School</h4>
+                <p>Teta Hills Secondary School is committed to providing quality education and holistic development of students.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="academics.html">Academics</a></li>
+                    <li><a href="facilities.html">Facilities</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📞 <a href="tel:+256744854500">+256 744 854500</a></p>
+                <p>📧 <a href="mailto:tetahills.ac.ug">tetahills.ac.ug</a></p>
+                <p>💬 <a href="https://wa.me/256744854500" target="_blank">WhatsApp Us</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Teta Hills Secondary School. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

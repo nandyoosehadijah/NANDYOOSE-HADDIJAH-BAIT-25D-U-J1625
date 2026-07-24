@@ -1,403 +1,313 @@
-// ===================================
-// TETA HILLS SECONDARY SCHOOL
-// JavaScript for Interactive Features
-// ===================================
+/* ===========================
+   TETA HILLS SECONDARY SCHOOL
+   Site Interactivity
+   =========================== */
 
-// ===================================
-// MOBILE MENU TOGGLE
-// ===================================
+document.addEventListener('DOMContentLoaded', function () {
 
-document.addEventListener('DOMContentLoaded', function() {
+    /* ---------------------------
+       1. Mobile Hamburger Menu
+       --------------------------- */
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('navMenu');
 
-    // Toggle mobile menu
-    if (hamburger) {
-        hamburger.addEventListener('click', function() {
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', function () {
             hamburger.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
-    }
 
-    // Close menu when a link is clicked
-    const navLinks = document.querySelectorAll('.nav-menu a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
+        // Close the menu whenever a nav link is tapped
+        navMenu.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', function () {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
         });
-    });
 
-    // Close menu when clicking outside
-    document.addEventListener('click', function(event) {
-        const isClickInsideNav = document.querySelector('.nav-container').contains(event.target);
-        if (!isClickInsideNav && navMenu.classList.contains('active')) {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-        }
-    });
-
-    // ===================================
-    // ACTIVE NAVIGATION HIGHLIGHT
-    // ===================================
-
-    function setActiveNav() {
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            const href = link.getAttribute('href');
-            if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-                link.classList.add('active');
+        // Close the menu when tapping outside of it
+        document.addEventListener('click', function (e) {
+            const clickedInsideNav = navMenu.contains(e.target) || hamburger.contains(e.target);
+            if (!clickedInsideNav && navMenu.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
             }
         });
     }
 
-    setActiveNav();
-
-    // ===================================
-    // CONTACT FORM HANDLING
-    // ===================================
-
-    const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-
-            // Validate form
-            if (!name || !email || !subject || !message) {
-                showFormMessage('Please fill in all required fields.', 'error');
-                return;
-            }
-
-            // Validate email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                showFormMessage('Please enter a valid email address.', 'error');
-                return;
-            }
-
-            // Prepare message for WhatsApp
-            const whatsappMessage = `*New Contact Form Submission*
-
-Name: ${name}
-Email: ${email}
-Phone: ${phone}
-Subject: ${subject}
-
-Message:
-${message}`;
-
-            // Send via WhatsApp
-            const encodedMessage = encodeURIComponent(whatsappMessage);
-            const whatsappURL = `https://wa.me/256744854500?text=${encodedMessage}`;
-
-            // Also prepare email body
-            const mailtoLink = `mailto:tetahills.ac.ug?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`)}`;
-
-            // Show success message
-            showFormMessage('Message sent successfully! We will contact you soon.', 'success');
-
-            // Open WhatsApp (commented out - uncomment if you want automatic WhatsApp opening)
-            // window.open(whatsappURL, '_blank');
-
-            // Reset form
-            contactForm.reset();
-
-            // Hide message after 5 seconds
-            setTimeout(() => {
-                document.getElementById('form-message').style.display = 'none';
-            }, 5000);
-        });
-    }
-
-    // Function to show form messages
-    function showFormMessage(message, type) {
-        const formMessage = document.getElementById('form-message');
-        if (formMessage) {
-            formMessage.textContent = message;
-            formMessage.classList.remove('success', 'error');
-            formMessage.classList.add(type);
-            formMessage.style.display = 'block';
-        }
-    }
-
-    // ===================================
-    // SMOOTH SCROLLING
-    // ===================================
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href !== '#' && document.querySelector(href)) {
-                e.preventDefault();
-                const target = document.querySelector(href);
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    // ===================================
-    // SCROLL ANIMATIONS
-    // ===================================
-
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    // Observe feature cards and other elements
-    document.querySelectorAll('.feature-card, .news-card, .team-member, .facility-card').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
-
-    // ===================================
-    // NAVIGATION SCROLL EFFECT
-    // ===================================
-
-    let lastScrollTop = 0;
+    /* ---------------------------
+       2. Navbar shadow on scroll
+       --------------------------- */
     const navbar = document.querySelector('.navbar');
-
-    window.addEventListener('scroll', function() {
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollTop > 100) {
-            navbar.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.15)';
-        } else {
-            navbar.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.1)';
-        }
-        
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    });
-
-    // ===================================
-    // QUICK CONTACT BUTTONS
-    // ===================================
-
-    const whatsappBtn = document.querySelector('.whatsapp-btn');
-    if (whatsappBtn) {
-        whatsappBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.open('https://wa.me/256744854500', '_blank');
-        });
-    }
-
-    const callBtn = document.querySelector('.call-btn');
-    if (callBtn) {
-        callBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = 'tel:+256744854500';
-        });
-    }
-
-    const emailBtn = document.querySelector('.email-btn');
-    if (emailBtn) {
-        emailBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = 'mailto:tetahills.ac.ug';
-        });
-    }
-
-    // ===================================
-    // ADD RIPPLE EFFECT TO BUTTONS
-    // ===================================
-
-    const buttons = document.querySelectorAll('.btn, .quick-btn');
-    buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-            ripple.classList.add('ripple');
-
-            this.appendChild(ripple);
-
-            setTimeout(() => ripple.remove(), 600);
-        });
-    });
-
-    // ===================================
-    // COUNTER ANIMATION
-    // ===================================
-
-    function animateCounters() {
-        const counters = document.querySelectorAll('.stat-number, .perf-number');
-        
-        counters.forEach(counter => {
-            const target = parseInt(counter.textContent);
-            const suffix = counter.textContent.replace(/[0-9]/g, '');
-            
-            if (!isNaN(target)) {
-                let current = 0;
-                const increment = Math.ceil(target / 50);
-                
-                const updateCounter = () => {
-                    current += increment;
-                    if (current >= target) {
-                        counter.textContent = target + suffix;
-                    } else {
-                        counter.textContent = current + suffix;
-                        setTimeout(updateCounter, 30);
-                    }
-                };
-                
-                updateCounter();
+    if (navbar) {
+        const toggleNavbarShadow = function () {
+            if (window.scrollY > 10) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
             }
-        });
+        };
+        toggleNavbarShadow();
+        window.addEventListener('scroll', toggleNavbarShadow);
     }
 
-    // Trigger counter animation when stats section is in view
-    const statsSection = document.querySelector('.stats');
-    if (statsSection) {
-        const statsObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
+    /* ---------------------------
+       3. Scroll-reveal animations
+       --------------------------- */
+    const revealSelectors = [
+        '.feature-card', '.news-card', '.stat-item',
+        '.mvv-card', '.team-member', '.achievement-item', '.timeline-item',
+        '.facility-card', '.amenity-item', '.access-card', '.tech-item',
+        '.curriculum-card', '.method-card', '.dept-card', '.performance-item', '.activity-card',
+        '.gallery-item', '.contact-card', '.faq-item', '.dept-contact-card', '.hours-item'
+    ];
+    const revealEls = document.querySelectorAll(revealSelectors.join(','));
+
+    if (revealEls.length && 'IntersectionObserver' in window) {
+        revealEls.forEach(function (el) { el.classList.add('reveal'); });
+
+        const revealObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry, index) {
                 if (entry.isIntersecting) {
-                    animateCounters();
-                    statsObserver.unobserve(entry.target);
+                    setTimeout(function () {
+                        entry.target.classList.add('reveal-active');
+                    }, (index % 6) * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+        revealEls.forEach(function (el) { revealObserver.observe(el); });
+    } else {
+        revealEls.forEach(function (el) { el.classList.add('reveal', 'reveal-active'); });
+    }
+
+    /* ---------------------------
+       4. Animated number counters
+       (.stat-number, .perf-number)
+       --------------------------- */
+    const counterEls = document.querySelectorAll('.stat-number, .perf-number');
+
+    function animateCounter(el) {
+        const raw = el.textContent.trim();
+        const match = raw.match(/^([^\d]*)([\d,]+)(.*)$/);
+        if (!match) return; // Skip non-numeric values like "A's & B's"
+
+        const prefix = match[1];
+        const target = parseInt(match[2].replace(/,/g, ''), 10);
+        const suffix = match[3];
+        const duration = 1500;
+        const startTime = performance.now();
+
+        function tick(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(target * eased);
+            el.textContent = prefix + current.toLocaleString() + suffix;
+            if (progress < 1) {
+                requestAnimationFrame(tick);
+            } else {
+                el.textContent = prefix + target.toLocaleString() + suffix;
+            }
+        }
+        requestAnimationFrame(tick);
+    }
+
+    if (counterEls.length && 'IntersectionObserver' in window) {
+        const counterObserver = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    observer.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.5 });
-        
-        statsObserver.observe(statsSection);
+
+        counterEls.forEach(function (el) { counterObserver.observe(el); });
     }
 
-    // ===================================
-    // FORM INPUT VALIDATION
-    // ===================================
+    /* ---------------------------
+       5. Back-to-top button
+       --------------------------- */
+    const backToTop = document.createElement('button');
+    backToTop.id = 'backToTop';
+    backToTop.setAttribute('aria-label', 'Back to top');
+    backToTop.innerHTML = '↑';
+    document.body.appendChild(backToTop);
 
-    const inputs = document.querySelectorAll('.contact-form input, .contact-form textarea, .contact-form select');
-    
-    inputs.forEach(input => {
-        input.addEventListener('blur', function() {
-            if (this.hasAttribute('required') && !this.value.trim()) {
-                this.style.borderColor = '#ff6b35';
-            } else if (this.type === 'email' && this.value.trim()) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(this.value)) {
-                    this.style.borderColor = '#ff6b35';
-                } else {
-                    this.style.borderColor = '#00d084';
-                }
-            } else {
-                this.style.borderColor = '#ddd';
-            }
-        });
-    });
-
-    // ===================================
-    // RESPONSIVE IMAGES
-    // ===================================
-
-    // Add loading lazy loading to images (optional)
-    const images = document.querySelectorAll('img');
-    images.forEach(img => {
-        img.loading = 'lazy';
-    });
-
-    // ===================================
-    // ACCESSIBILITY - KEYBOARD NAVIGATION
-    // ===================================
-
-    document.addEventListener('keydown', function(e) {
-        // Close mobile menu on Escape
-        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 500) {
+            backToTop.classList.add('show');
+        } else {
+            backToTop.classList.remove('show');
         }
     });
 
-    // ===================================
-    // DYNAMIC YEAR IN FOOTER
-    // ===================================
+    backToTop.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
-    const footerYear = document.querySelector('.footer-bottom');
-    if (footerYear) {
-        const currentYear = new Date().getFullYear();
-        footerYear.textContent = `© ${currentYear} Teta Hills Secondary School. All Rights Reserved.`;
+    /* ---------------------------
+       6. Gallery filter + lightbox
+       (only runs on gallery.html)
+       --------------------------- */
+    const galleryGrid = document.querySelector('.gallery-grid');
+    if (galleryGrid) {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterButtons.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                filterButtons.forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+
+                galleryItems.forEach(function (item) {
+                    const category = item.getAttribute('data-category');
+                    const show = filter === 'all' || filter === category;
+                    item.style.display = show ? '' : 'none';
+                    if (show) {
+                        item.classList.remove('reveal-active');
+                        requestAnimationFrame(function () {
+                            item.classList.add('reveal-active');
+                        });
+                    }
+                });
+            });
+        });
+
+        // Lightbox
+        const lightbox = document.createElement('div');
+        lightbox.className = 'lightbox';
+        lightbox.innerHTML =
+            '<button class="lightbox-close" aria-label="Close">&times;</button>' +
+            '<button class="lightbox-prev" aria-label="Previous">&#10094;</button>' +
+            '<div class="lightbox-content">' +
+                '<div class="lightbox-media"></div>' +
+                '<p class="lightbox-caption"></p>' +
+            '</div>' +
+            '<button class="lightbox-next" aria-label="Next">&#10095;</button>';
+        document.body.appendChild(lightbox);
+
+        const lightboxMedia = lightbox.querySelector('.lightbox-media');
+        const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+        let visibleItems = [];
+        let currentIndex = 0;
+
+        function getVisibleItems() {
+            return Array.prototype.filter.call(galleryItems, function (item) {
+                return item.style.display !== 'none';
+            });
+        }
+
+        function openLightbox(item) {
+            visibleItems = getVisibleItems();
+            currentIndex = visibleItems.indexOf(item);
+            renderLightbox();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function renderLightbox() {
+            const item = visibleItems[currentIndex];
+            if (!item) return;
+            const visual = item.querySelector('.gallery-visual');
+            const caption = item.querySelector('.gallery-caption h3');
+            const desc = item.querySelector('.gallery-caption p');
+            lightboxMedia.innerHTML = visual ? visual.outerHTML : '';
+            lightboxCaption.innerHTML = (caption ? '<strong>' + caption.textContent + '</strong><br>' : '') +
+                (desc ? desc.textContent : '');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        galleryItems.forEach(function (item) {
+            item.addEventListener('click', function () { openLightbox(item); });
+        });
+
+        lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', function (e) {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        lightbox.querySelector('.lightbox-next').addEventListener('click', function () {
+            currentIndex = (currentIndex + 1) % visibleItems.length;
+            renderLightbox();
+        });
+        lightbox.querySelector('.lightbox-prev').addEventListener('click', function () {
+            currentIndex = (currentIndex - 1 + visibleItems.length) % visibleItems.length;
+            renderLightbox();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') lightbox.querySelector('.lightbox-next').click();
+            if (e.key === 'ArrowLeft') lightbox.querySelector('.lightbox-prev').click();
+        });
     }
 
-    // ===================================
-    // PREFETCH LINKS
-    // ===================================
-
-    const links = document.querySelectorAll('a[href$=".html"]');
-    links.forEach(link => {
-        link.addEventListener('mouseover', function() {
-            const href = this.getAttribute('href');
-            const prefetchLink = document.createElement('link');
-            prefetchLink.rel = 'prefetch';
-            prefetchLink.href = href;
-            document.head.appendChild(prefetchLink);
+    /* ---------------------------
+       7. FAQ accordion
+       (only runs where .faq-item exists)
+       --------------------------- */
+    document.querySelectorAll('.faq-item').forEach(function (item) {
+        item.addEventListener('click', function () {
+            const wasOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(function (openItem) {
+                openItem.classList.remove('open');
+            });
+            if (!wasOpen) item.classList.add('open');
         });
     });
 
-    console.log('Teta Hills School website loaded successfully!');
-});
+    /* ---------------------------
+       8. Contact form validation
+       (only runs where .contact-form exists)
+       --------------------------- */
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        const messageBox = contactForm.querySelector('.form-message');
 
-// ===================================
-// UTILITY FUNCTIONS
-// ===================================
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            let valid = true;
+            const requiredFields = contactForm.querySelectorAll('[required]');
 
-// Function to check if element is in viewport
-function isInViewport(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-}
+            requiredFields.forEach(function (field) {
+                if (!field.value.trim()) {
+                    valid = false;
+                    field.style.borderColor = '#e63946';
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
 
-// Function to debounce scroll events
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
+            const emailField = contactForm.querySelector('input[type="email"]');
+            if (emailField && emailField.value.trim()) {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(emailField.value.trim())) {
+                    valid = false;
+                    emailField.style.borderColor = '#e63946';
+                }
+            }
 
-// ===================================
-// ERROR HANDLING
-// ===================================
+            if (messageBox) {
+                messageBox.style.display = 'block';
+                if (valid) {
+                    messageBox.textContent = 'Thank you! Your message has been sent. We will get back to you soon.';
+                    messageBox.className = 'form-message success';
+                    contactForm.reset();
+                } else {
+                    messageBox.textContent = 'Please fill in all required fields correctly.';
+                    messageBox.className = 'form-message error';
+                }
+            }
+        });
+    }
 
-window.addEventListener('error', function(e) {
-    console.error('An error occurred:', e.error);
-});
-
-window.addEventListener('unhandledrejection', function(e) {
-    console.error('Unhandled promise rejection:', e.reason);
 });
